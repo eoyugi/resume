@@ -1,0 +1,21 @@
+name: CV Update Reminder
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # Runs at 00:00 on the first day of every month
+
+jobs:
+  create_issue:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create Issue
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: 'Time to update your CV',
+            body: 'It\'s been a month since your last CV review. Have you gained any new skills or experiences? Update your CV!'
+          })
